@@ -1,0 +1,6 @@
+/* const max = await caminhaoModel.findOne({}).sort({'renavam': -1});
+        conteudo.renavam = max == null ? 1 : max.renavam + 1; */
+
+ID ser igual as chaves(this._id = this.renavam/cpf/cnpj)
+
+arrumar a atualização do array de caminhoes no proprietario( router, cria um metodo de atuializacao de caminhao no controller, )
