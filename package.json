@@ -1,8 +1,8 @@
 {
-  "name": "trabalho-js",
+  "name": "def",
   "version": "1.0.0",
   "description": "",
-  "main": "servidor.js",
+  "main": "visual.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.0.3"
+    "prompt-sync": "^4.2.0"
   }
 }
