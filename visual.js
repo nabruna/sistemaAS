@@ -1,6 +1,18 @@
 const prompt = require('prompt-sync')();
 const Logic = require('./logico.js');
+const sequelize = require('./banco.js');
+const Produto = require('./produto.js');
 
+(async () => {
+    try {
+        await sequelize.sync({ force: true });
+        console.log('Tabelas sincronizadas com sucesso.');
+    } catch (error) {
+        console.error('Erro ao sincronizar tabelas:', error);
+    }
+
+    
+})();
 
 console.log("-- MENU DE MANUTENÇÃO DE PRODUTOS --");
 
@@ -18,7 +30,7 @@ do{
             menuMovimentacao()
             break;
         case "2":
-            cadastroResultado(Logic.cadastra(parseInt(recebeId()), recebeNome()))
+            Logic.cadastra(recebeNome())
             break;
         case "3":
             Logic.consultaQuantidade(parseInt(recebeId()))
@@ -64,18 +76,18 @@ function recebeQuant() {
     return prompt("Insira a quantidade do movimento: ")
 }
 
-//função para informar o resultado no cadastro
+/*
 function cadastroResultado(resultado){
-    if(resultado){
+ if(resultado != false){
         console.log("Cadastro realizado com sucesso")
         
     }else{
         console.log("Falha no cadastro")
-    }
-}
+    } 
+}*/
 
-function registraMovimento(resgistro){
-    if(resgistro){
+function registraMovimento(registro){
+    if(registro){
         console.log("Registro realizado com sucesso")
     }else{
         console.log("Falha no registro")

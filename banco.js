@@ -1,11 +1,8 @@
-const mysql = require('mysql');
+const Sequelize = require ('sequelize');
+const sequelize = new Sequelize('crud', 'root', 'positivo',{
+    dialect: 'mysql',
+    host: 'localhost',
+    port: 3306
+})
 
-const db = mysql.createPool({
-  host: 'localhost',     // MySQL server host
-  user: 'root',  // MySQL username
-  password: 'positivo123',  // MySQL password
-  database: 'db_camadas'  // database name
-});
-
-// export db
-module.exports = db;
+module.exports = sequelize;
