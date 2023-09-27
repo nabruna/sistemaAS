@@ -6,7 +6,7 @@ const joinQuery = `
   INNER JOIN produto ON movimentoproduto.id_produto = produto.id
   WHERE movimentoproduto.id_produto = ?`;
 
-// Define any parameters for your query
+// Define any parameters for your query,
 const conditionValue = '2'; // pegar esse valor com prompt do comando, usuário informa id do produto, retorna o nome e qtde do movimento
 
 // Execute the query

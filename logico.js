@@ -1,5 +1,6 @@
 const Produto = require("./produto.js");
 const MovimentoProduto = require("./movimentacao.js");
+const database = require('./banco.js')
 
 class Logico {
   async cadastra(nome) {
@@ -10,9 +11,7 @@ class Logico {
         );
         return;
       }
-      console.log("chegou");
-      await Produto.create({ nome: `${nome}` });
-      console.log("chegou depois");
+      await Produto.create({ nome });
 
       console.log("Produto cadastrado com sucesso");
     } catch (error) {
@@ -20,12 +19,12 @@ class Logico {
     }
   }
 
-  async movimentaProduto(id, quant, tipo) {
-    try {
+  async movimentaProduto(idProduto, quant, tipo) {
+     try {
       await MovimentoProduto.create({
-        qtde_mov: quant,
+        qtdMovimento: quant,
         tipo: tipo,
-        id_produto: id,
+        produtoId: idProduto
       });
       console.log("Registro de movimentação realizado com sucesso");
     } catch (error) {
@@ -36,14 +35,43 @@ class Logico {
   async consultaQuantidade(id) {
     // Aqui deverá ser incluído o metodo que usará o ID do parametro para fazer a SELECT+JOIN das tabelas do banco, trazendo as informações em um objeto que sera impresso
     try {
-      const resultado = await MovimentoProduto.findAll({
-        where: { id_produto: id },
+      // await database.sync();
+  
+      // const productId = id;
+  
+      const results = await Produto.findAll({
+        attributes: [
+          'nome',
+          [
+            database.fn(
+              'SUM',
+              database.literal(
+                "CASE WHEN tipo = 'e' OR tipo = 'E' THEN qtdMovimento ELSE -qtdMovimento END"
+              )
+            ),
+            'quantidade_total',
+          ],
+        ],
+        include: [
+          {
+            model: MovimentoProduto,
+            where: {
+              produtoId: id,
+            },
+            attributes: [],
+          },
+        ],
+        group: ['Produto.nome'],
       });
-      console.log("Consulta de quantidade realizada com sucesso:", resultado);
-      return resultado;
+  
+      console.log('Query results:', results);
+  
+      for (const row of results) {
+        console.log(`Nome: ${row.nome}`);
+        console.log(`Quantidade total: ${row.quantidade_total}`);
+      }
     } catch (error) {
-      console.error("Erro ao consultar quantidade:", error);
-      return null;
+      console.error('Error executing Sequelize query:', error);
     }
   }
 }

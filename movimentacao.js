@@ -16,13 +16,15 @@ const Movimentacao = database.define('movimentacao', {
     tipo:{
         type:Sequelize.STRING,
         allowNull:false
-    }
-})
-
-Movimentacao.associate = () => {
-    Movimentacao.belongsTo(Produto,{
-        foreignKey:'idProduto',
-    });
-};
+    },
+      produtoId: {
+        type:Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'produtos',
+            key: 'id'
+        },
+      },
+});
 
 module.exports = Movimentacao;

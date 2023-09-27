@@ -3,20 +3,18 @@ const Logic = require('./logico.js');
 const sequelize = require('./banco.js');
 const Produto = require('./produto.js');
 
+
+
+console.log("-- MENU DE MANUTENÇÃO DE PRODUTOS --");
+
 (async () => {
     try {
-        await sequelize.sync({ force: true });
+        await sequelize.sync({force : true});
         console.log('Tabelas sincronizadas com sucesso.');
     } catch (error) {
         console.error('Erro ao sincronizar tabelas:', error);
     }
-
     
-})();
-
-console.log("-- MENU DE MANUTENÇÃO DE PRODUTOS --");
-
-do{
     console.log("\nMENU PRINCIPAL")
     console.log("1 - Movimentar Produto");
     console.log("2 - Cadastrar produto");
@@ -24,6 +22,7 @@ do{
     console.log("4 - Sair");
 
     let opcao = prompt("Escolha uma opção para prosseguir: ");
+
 
     switch (opcao) {
         case "1":
@@ -43,8 +42,7 @@ do{
             console.log("opção invalida")
             break;
     }
-    
-}while(true)
+
 
 function menuMovimentacao() {
     let mov = prompt("Digite E para registrar uma entrada, S para registrar uma saida ou C para cancelar a operação: ");
@@ -54,7 +52,7 @@ function menuMovimentacao() {
         return
 
     }else if(mov == "s" || mov == "S" || mov == "e" || mov == "E"){
-        registraMovimento(Logic.movimentaProduto(parseInt(recebeId()), parseInt(recebeQuant()), mov))
+       Logic.movimentaProduto(parseInt(recebeId()), parseInt(recebeQuant()), mov)
     }else {
         console.log("Escolha inválida")
     }
@@ -76,21 +74,12 @@ function recebeQuant() {
     return prompt("Insira a quantidade do movimento: ")
 }
 
-/*
-function cadastroResultado(resultado){
- if(resultado != false){
-        console.log("Cadastro realizado com sucesso")
-        
-    }else{
-        console.log("Falha no cadastro")
-    } 
-}*/
-
-function registraMovimento(registro){
+/* function registraMovimento(registro){
     if(registro){
         console.log("Registro realizado com sucesso")
     }else{
         console.log("Falha no registro")
     }
 
-}
+} */
+})();
