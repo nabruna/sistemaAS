@@ -1,20 +1,20 @@
 const prompt = require('prompt-sync')();
-const Logic = require('./logico.js');
-const sequelize = require('./banco.js');
-const Produto = require('./produto.js');
+const Logic = require('./logico');
+const sequelize = require('./banco');
+const Produto = require('./produto');
 
 
 
-console.log("-- MENU DE MANUTENÇÃO DE PRODUTOS --");
+
 
 (async () => {
     try {
-        await sequelize.sync({force : true});
+        await sequelize.sync({/* force : true */ });
         console.log('Tabelas sincronizadas com sucesso.');
     } catch (error) {
         console.error('Erro ao sincronizar tabelas:', error);
     }
-    
+    console.log("-- MENU DE MANUTENÇÃO DE PRODUTOS --");
     console.log("\nMENU PRINCIPAL")
     console.log("1 - Movimentar Produto");
     console.log("2 - Cadastrar produto");

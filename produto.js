@@ -1,18 +1,21 @@
-const Sequelize = require('sequelize');
-const database = require('./banco.js');
-const MovimentoProduto = require("./movimentacao.js");
+const {Sequelize, DataTypes} = require('sequelize');
+const banco = require('./banco');
+const Movimentacao = require('./movimentacao');
 
-const Produto = database.define('produto', {
-    id:{
-        type: Sequelize.INTEGER,
+const Produto = banco.define('produto', {
+    produtoId:{
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
     nome:{
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
     },
 });
+
+Produto.hasMany(Movimentacao, {foreignKey: 'produtoId'});
+Movimentacao.belongsTo(Produto, {foreignKey: 'produtoId'});
 
 module.exports = Produto;

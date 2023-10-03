@@ -1,6 +1,6 @@
 const Produto = require("./produto.js");
-const MovimentoProduto = require("./movimentacao.js");
-const database = require('./banco.js')
+const database = require('./banco.js');
+const Movimentacao = require("./movimentacao.js");
 
 class Logico {
   async cadastra(nome) {
@@ -21,7 +21,7 @@ class Logico {
 
   async movimentaProduto(idProduto, quant, tipo) {
      try {
-      await MovimentoProduto.create({
+      await Movimentacao.create({
         qtdMovimento: quant,
         tipo: tipo,
         produtoId: idProduto
@@ -34,45 +34,40 @@ class Logico {
 
   async consultaQuantidade(id) {
     // Aqui deverá ser incluído o metodo que usará o ID do parametro para fazer a SELECT+JOIN das tabelas do banco, trazendo as informações em um objeto que sera impresso
-    try {
-      // await database.sync();
-  
-      // const productId = id;
-  
-      const results = await Produto.findAll({
+    
+    Movimentacao.findAll({
         attributes: [
-          'nome',
-          [
-            database.fn(
-              'SUM',
-              database.literal(
-                "CASE WHEN tipo = 'e' OR tipo = 'E' THEN qtdMovimento ELSE -qtdMovimento END"
-              )
-            ),
-            'quantidade_total',
-          ],
+          ['tipo', 'tipo'],
+          ['produtoId', 'produtoId'],
+          [database.col('produto.nome'), 'nome'],
+          'qtdMovimento'
         ],
+        where: {
+          produtoId: id,
+        },
         include: [
           {
-            model: MovimentoProduto,
-            where: {
-              produtoId: id,
-            },
+            model: Produto,
             attributes: [],
           },
-        ],
-        group: ['Produto.nome'],
-      });
-  
-      console.log('Query results:', results);
-  
-      for (const row of results) {
-        console.log(`Nome: ${row.nome}`);
-        console.log(`Quantidade total: ${row.quantidade_total}`);
-      }
-    } catch (error) {
+        ] ,
+      }).then((results) => {
+        let qtd = 0
+        results[0].dataValues.nome
+        // Você pode iterar pelos resultados, se necessário
+        for (const result of results) {
+          if(result.tipo == 'E' || result.tipo == 'e'){
+            qtd += result.qtdMovimento
+          }
+          if(result.tipo == 'S' || result.tipo == 's'){
+            qtd -= result.qtdMovimento
+          }
+        } 
+        console.log(`Nome: ${results[0].dataValues.nome}`);
+        console.log(`Quantidade: ${qtd}`); 
+    }).catch((error) =>{
       console.error('Error executing Sequelize query:', error);
-    }
+    }) 
   }
 }
 

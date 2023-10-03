@@ -1,30 +1,34 @@
-const Sequelize = require('sequelize');
-const database = require('./banco.js');
-const Produto = require('./produto.js');
+const {Sequelize, DataTypes} = require('sequelize');
+const banco = require('./banco');
+const Produto = require('./produto');
 
-const Movimentacao = database.define('movimentacao', {
-    id:{
-        type: Sequelize.INTEGER,
+const Movimentacao = banco.define('movimentacao', {
+    movimentacaoId:{
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
     qtdMovimento:{
-        type:Sequelize.INTEGER,
+        type:DataTypes.INTEGER,
         allowNull: false
     },
     tipo:{
-        type:Sequelize.STRING,
+        type:DataTypes.STRING,
         allowNull:false
-    },
-      produtoId: {
-        type:Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'produtos',
-            key: 'id'
-        },
-      },
+    }//,
+    
+    //   produtoId: {
+    //     type:Sequelize.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: 'produtos',
+    //         key: 'produtoId'
+    //     },
+    //   },
 });
+
+
+
 
 module.exports = Movimentacao;
